@@ -22,8 +22,8 @@ export async function POST(request: NextRequest, response: NextResponse) {
         name: "session",
         value: sessionCookie,
         maxAge: expiresIn,
-        httpOnly: true,
-        secure: true,
+        // httpOnly: true,
+        // secure: true,
       };
       
       const user = await auth().getUser(decodedToken.user_id);
