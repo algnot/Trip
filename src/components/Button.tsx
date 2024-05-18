@@ -28,7 +28,7 @@ export default function Button(props: ButtonProps) {
 
   return (
     <div
-      className={`flex items-center justify-center bg-primary hover:bg-primaryHover text-white font-bold border-0 py-2 px-8 gap-3 focus:outline-none cursor-pointer rounded text-md ${props.className}`}
+      className={`flex items-center justify-center bg-primary hover:bg-primaryHover text-white border-0 py-2 px-8 gap-3 focus:outline-none cursor-pointer rounded text-md ${props.className}`}
       onClick={onClickHandle}
     >
       {props.children}

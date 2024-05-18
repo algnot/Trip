@@ -41,7 +41,7 @@ export default function Navbar(props: { active: string }) {
                   <div>
                     <icon.icon className="text-xl fill-black" />
                   </div>
-                  <div className="text-sm font-bold text-black">{icon.name}</div>
+                  <div className="text-sm text-black">{icon.name}</div>
                 </Link>
               );
         }
@@ -54,7 +54,7 @@ export default function Navbar(props: { active: string }) {
               <div>
                 <icon.icon className="text-xl fill-gray" />
               </div>
-              <div className="text-sm font-bold text-gray">{icon.name}</div>
+              <div className="text-sm text-gray">{icon.name}</div>
             </Link>
           );
       })}
