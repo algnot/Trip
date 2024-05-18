@@ -1,5 +1,5 @@
 import { UserRecord } from "firebase-admin/auth";
-import { db } from "./db";
+import { db } from "./firebaseAdmin";
 
 const userCollection = db.collection("users")
 
