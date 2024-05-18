@@ -1,8 +1,8 @@
 import axios from "axios";
-import { UserCredential } from "firebase/auth";
+import { IdTokenResult } from "firebase/auth";
 import { useState, useEffect } from 'react';
 
-export const login = async (auth: UserCredential | null) => {
+export const login = async (auth: IdTokenResult) => {
   if (!auth) {
     return;
   }
@@ -13,7 +13,7 @@ export const login = async (auth: UserCredential | null) => {
       {},
       {
         headers: {
-          Authorization: `Bearer ${await auth.user.getIdToken()}`,
+          Authorization: `Bearer ${auth.token}`,
         },
       }
     );

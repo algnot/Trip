@@ -1,5 +1,5 @@
 "use client";
-import { getRedirectResult, signInWithRedirect } from "firebase/auth";
+import { signInWithPopup, onAuthStateChanged } from "firebase/auth";
 import { auth, provider } from "@/utils/client/firebaseClient";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -20,17 +20,20 @@ export default function SignIn() {
 
     checkUser();
 
-    getRedirectResult(auth).then(async (auth) => {
-      const user = await login(auth);
-
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
-        router.push("/");
+        const userLogin = await login(await user.getIdTokenResult());        
+
+        if (userLogin) {
+          router.push("/");
+        }
       }
-    });
+      
+    })
   }, [router]);
 
   const signIn = async () => {
-    signInWithRedirect(auth, provider);
+    signInWithPopup(auth, provider);
   };
 
   return (
