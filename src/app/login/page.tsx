@@ -40,8 +40,8 @@ export default function SignIn() {
     <div className="container flex flex-col">
       <div className="px-10 pt-40">
         <Image src="/favicon.ico" alt="icon" width={32} height={32} />
-        <div className="text-4xl font-bold mt-4">ทาโร่ช่วยหาร</div>
-        <div className="text-xl font-bold mt-4">
+        <div className="text-4xl mt-4">ทาโร่ช่วยหาร</div>
+        <div className="text-xl mt-4">
           (น.) โปรแกรมคิดเงินที่จะช่วยให้คุณไม่ต้องคิดเลขหารค่ากับข้าวกับเพื่อนให้เหนื่อยอีกต่อไป
         </div>
       </div>
