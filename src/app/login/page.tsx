@@ -46,7 +46,7 @@ export default function SignIn() {
         </div>
       </div>
       
-      <div className="w-100 h-100 py-10 px-5 mt-auto bottom-0 bg-white rounded-t-lg">
+      <div className="w-100 h-100 py-10 px-5 mt-auto bottom-0 bg-white rounded-t-lg shadow-sm">
         <Button onClick={signIn} useLoading={true} alwayLoading={true} className="font-black">
           <Image src="/asset/icon/google-logo.svg" alt="google-icon" width={25} height={25} />
           Sign In with Google

@@ -29,20 +29,19 @@ export default function Navbar(props: { active: string }) {
   ];
 
   return (
-    <div className="navbar flex items-center justify-around">
+    <div className="navbar flex items-center justify-around shadow-sm">
       {items.map((icon) => {
         if (props.active == icon.href) {
             return (
-                <Link
+                <div
                   key={icon.name}
-                  href={icon.href}
-                  className="flex flex-col justify-end items-center gap-1 cursor-pointer"
+                  className="flex flex-col justify-end items-center gap-1"
                 >
                   <div>
                     <icon.icon className="text-xl fill-black" />
                   </div>
                   <div className="text-sm text-black">{icon.name}</div>
-                </Link>
+                </div>
               );
         }
         return (

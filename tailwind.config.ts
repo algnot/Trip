@@ -15,6 +15,7 @@ const config: Config = {
       primary: '#0F6CBD',
       primaryHover: '#0061b6',
       gray: '#D0D0D0',
+      error: '#C30052'
     },
   },
   plugins: [],
