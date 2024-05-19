@@ -68,7 +68,7 @@ export default function Input(props: {
           type={props.type}
           name={props.name}
           value={formatDateToString(date)}
-          className="invisible"
+          className="hidden"
           placeholder={props.placeholder}
         />
       </div>
