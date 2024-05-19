@@ -5,7 +5,7 @@ import ProgressBar from "@/components/ProgressBar";
 import Topbar from "@/components/Topbar";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { IoIosDocument } from "react-icons/io";
+import { IoIosCalendar, IoIosDocument, IoIosText } from "react-icons/io";
 
 export default function CreateTrip() {
   const router = useRouter();
@@ -18,7 +18,7 @@ export default function CreateTrip() {
           router.push("/");
         }}
       />
-      <div className="px-10 pt-8">
+      <form className="px-10 pt-8">
         <ProgressBar steps={[1, 2, 3]} progresses={[50, 0, 0]} />
         <div className="mt-8">
           <Input
@@ -28,8 +28,21 @@ export default function CreateTrip() {
             name="name"
             icon={IoIosDocument}
           />
+          <Input
+            label="วันที่"
+            type="date"
+            name="date"
+            icon={IoIosCalendar}
+          />
+          <Input
+            label="รายละเอียดการหาร"
+            type="textarea"
+            name="desceiption"
+            placeholder="หารค่ากับข้าวที่ไปกินกันที่สยาม"
+            icon={IoIosText}
+          />
         </div>
-      </div>
+      </form>
       <Navbar active="/" />
     </div>
   );
