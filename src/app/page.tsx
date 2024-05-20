@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
-  const user = useUser();
+  const [user, _] = useUser();
 
   return (
     <div className={`container`}>

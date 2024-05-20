@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, {
+  ChangeEvent,
+  useEffect,
+  useState,
+} from "react";
 import { IconType } from "react-icons";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { formatDateToString } from "@/utils/client/date";
+import { useLocalStorage } from "@/utils/client/localStorage";
 
 export default function Input(props: {
   name: string;
@@ -10,8 +15,34 @@ export default function Input(props: {
   label?: string;
   placeholder?: string;
   icon?: IconType;
+  useLocal?: boolean;
 }) {
   const [date, setDate] = useState(new Date());
+  const [local, setLocal] = useLocalStorage(
+    `input-${props.type}-${props.name}`
+  );
+
+  useEffect(() => {
+    if (props.type === "date") {
+      if (local) {
+        setDate(new Date(local));
+      }
+    }
+  }, [local, props.type]);
+
+  const handleDataChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    if (!props.useLocal) {
+      return;
+    }
+    setLocal(e.target.value);
+  };
+
+  const handleDateChange = (date: Date) => {
+    setDate(date);
+    setLocal(date.toISOString());
+  };
 
   if (props.type !== "date") {
     return (
@@ -22,20 +53,29 @@ export default function Input(props: {
 
         <div className="relative mb-6">
           {props.icon && (
-            <div className={`absolute flex items-center pl-2 pointer-events-none ${props.type === "textarea" ? "pt-2.5" : "inset-y-0 start-0"}`}>
+            <div
+              className={`absolute flex items-center pl-2 pointer-events-none ${
+                props.type === "textarea" ? "pt-2.5" : "inset-y-0 start-0"
+              }`}
+            >
               {<props.icon className="fill-gray text-gray w-[24px] h-[24px]" />}
             </div>
           )}
           {props.type === "textarea" ? (
-            <textarea 
-            placeholder={props.placeholder}
-            className={`border-2 border-gray text-black text-md rounded-lg block w-full ${
+            <textarea
+              onChange={handleDataChange}
+              defaultValue={!props.useLocal ? "" : local.toString()}
+              placeholder={props.placeholder}
+              className={`border-2 border-gray text-black text-md rounded-lg block w-full ${
                 props.icon ? "pl-10" : "pl-2"
-              } p-2 focus:border-black disabled:bg-blackground invalid:border-error invalid:text-error focus:invalid:border-error focus:invalid:ring-error`}></textarea>
+              } p-2 focus:border-black disabled:bg-blackground invalid:border-error invalid:text-error focus:invalid:border-error focus:invalid:ring-error`}
+            ></textarea>
           ) : (
             <input
               type={props.type}
               name={props.name}
+              defaultValue={!props.useLocal ? "" : local.toString()}
+              onChange={handleDataChange}
               className={`border-2 border-gray text-black text-md rounded-lg block w-full ${
                 props.icon ? "pl-10" : "pl-2"
               } p-2 focus:border-black disabled:bg-blackground invalid:border-error invalid:text-error focus:invalid:border-error focus:invalid:ring-error`}
@@ -60,7 +100,7 @@ export default function Input(props: {
         )}
         <DatePicker
           selected={date}
-          onChange={(date) => setDate(date ?? new Date())}
+          onChange={handleDateChange}
           dateFormat="dd/MM/yyyy"
           className={` text-black text-md w-96 block p-2 focus:border-transparent outline-none`}
         />
@@ -69,6 +109,7 @@ export default function Input(props: {
           name={props.name}
           value={formatDateToString(date)}
           className="hidden"
+          readOnly
           placeholder={props.placeholder}
         />
       </div>

@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import { useLocalStorage } from "@/utils/client/localStorage";
+import React, { useEffect, useState } from "react";
 import { IconType } from "react-icons";
 import Select from "react-tailwindcss-select";
+import { SelectValue, Option } from "react-tailwindcss-select/dist/components/type";
 // doc: https://www.npmjs.com/package/react-tailwindcss-select
 
-interface Option {
-    value: string;
-    label: string;
-}
 
 export default function SelectInput(props: {
   name: string;
@@ -15,14 +13,40 @@ export default function SelectInput(props: {
   icon?: IconType;
   placeholder?: string;
 }) {
-  const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState<null | Option>(null);
   const [output, setOutput] = useState("null");
+  const [local, setLocal] = useLocalStorage(
+    `input-select-${props.name}`
+  );
 
-  const handleChange = (value: any) => {    
-    if(value) {
-        setOutput(value?.value ?? "")
+  useEffect(() => {
+    if(local && props.options.length > 0){
+      const out: SelectValue = JSON.parse(local)
+      if (Array.isArray(out)) {
+        setOutput(out[0].value);
+        setSelected(out[0]);
+      } else if (out) {
+        setOutput(out.value ?? "");
+        setSelected(out);
+      } else {
+        setOutput("");
+        setSelected(null);
+      }
     }
-    setSelected(value);
+  }, [local, props.options])
+
+  const handleChange = (value: SelectValue) => {  
+    if (Array.isArray(value)) {
+      setOutput(value[0].value);
+      setSelected(value[0]);
+    } else if (value) {
+      setOutput(value.value ?? "");
+      setSelected(value);
+    } else {
+      setOutput("");
+      setSelected(null);
+    }
+    setLocal(JSON.stringify(value))
   };
 
   return (
@@ -42,7 +66,7 @@ export default function SelectInput(props: {
           value={selected}
           primaryColor="primary"
           onChange={handleChange}
-          isSearchable={true}
+          // isSearchable={true}
           placeholder={props.placeholder}
           searchInputPlaceholder="ค้นหา"
           noOptionsMessage="ไม่พบข้อมูลที่ค้นหา"

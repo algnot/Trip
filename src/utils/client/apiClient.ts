@@ -1,6 +1,6 @@
 import axios from "axios";
 import { IdTokenResult } from "firebase/auth";
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export const login = async (auth: IdTokenResult) => {
   if (!auth) {
@@ -26,6 +26,7 @@ export const login = async (auth: IdTokenResult) => {
 };
 
 export const logout = async () => {
+  window.localStorage.clear();
   return await axios.get("/api/logout");
 };
 
@@ -45,7 +46,7 @@ export const getUser = async () => {
   }
 };
 
-export const useUser = () => {
+export const useUser = ():[any, (value: string) => void] => {
   const [userData, setUserData] = useState({
     data: {
       name: "",
@@ -55,8 +56,14 @@ export const useUser = () => {
 
   useEffect(() => {
     const getUserData = async () => {
-      const userData = await getUser();
-      setUserData(userData)
+      const catchData = window.localStorage.getItem("catch-data-user")
+      if(!catchData) {
+        const userData = await getUser();
+        window.localStorage.setItem("catch-data-user", JSON.stringify(userData))
+        setUserData(userData)
+      } else {
+        setUserData(JSON.parse(catchData))
+      }
     }
 
     if(!userData.data.name){
@@ -64,5 +71,11 @@ export const useUser = () => {
     }
   });
 
-  return userData;
+  const refetch = async () => {
+    const userData = await getUser();
+    window.localStorage.setItem("catch-data-user", JSON.stringify(userData))
+    setUserData(userData)
+  }
+
+  return [userData, refetch];
 };
