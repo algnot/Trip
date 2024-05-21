@@ -29,10 +29,6 @@ body {
 }
 
 @media screen and (max-width: 500px) {
-    body {
-      background-color: blue;
-    }
-
     .container{
         width: 100vw;
     }
