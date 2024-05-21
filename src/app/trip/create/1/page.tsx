@@ -20,7 +20,7 @@ export default function CreateTrip() {
   const router = useRouter();
 
   return (
-    <div className={`container`}>
+    <div className="container">
       <Topbar
         topic="รายละเอียดการหาร"
         onBack={() => {
