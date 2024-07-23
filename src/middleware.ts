@@ -14,6 +14,14 @@ export async function middleware(request: NextRequest, response: NextResponse) {
     },
   });
 
+  if(responseAPI.status != 200) {
+    request.cookies.set({
+      name: "session",
+      value: ""
+    })
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
   const { isLogged } = await responseAPI.json()
 
   if (!isLogged) {

@@ -6,12 +6,12 @@ import { createUserIfNotExist } from "@/utils/backend/users";
 
 customInitApp();
 
-export async function POST(request: NextRequest, response: NextResponse) {
+export async function POST(request: NextRequest, response: NextResponse) {  
   const authorization = headers().get("Authorization");
   
   if (authorization?.startsWith("Bearer ")) {
     const idToken = authorization.split("Bearer ")[1];
-    const decodedToken = await auth().verifyIdToken(idToken);
+    const decodedToken = await auth().verifyIdToken(idToken);    
 
     if (decodedToken) {
       const expiresIn = 60 * 60 * 24 * 5 * 1000;
@@ -22,8 +22,6 @@ export async function POST(request: NextRequest, response: NextResponse) {
         name: "session",
         value: sessionCookie,
         maxAge: expiresIn,
-        // httpOnly: true,
-        // secure: true,
       };
       
       const user = await auth().getUser(decodedToken.user_id);
