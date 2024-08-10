@@ -1,26 +1,36 @@
 "use client";
 import Button from "@/components/Button";
+import Form from "@/components/Form";
 import Input from "@/components/Input";
 import Navbar from "@/components/Navbar";
 import ProgressBar from "@/components/ProgressBar";
 import SelectInput from "@/components/Select";
 import Topbar from "@/components/Topbar";
 import { useRouter } from "next/navigation";
-import React from "react";
+import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import {
   IoIosCalendar,
   IoIosCard,
   IoIosDocument,
   IoIosText,
-  IoIosArrowForward
+  IoIosArrowForward,
 } from "react-icons/io";
+import { MdOutlinePayment } from "react-icons/md";
 
 export default function CreateTrip() {
   const router = useRouter();
-
+  const [isShowCreatePayment, setIsShowCreatePayment] = useState<boolean>(false);
+  
   return (
     <div className="container">
+      {isShowCreatePayment && (
+        <Form
+          title="เพิ่มการชำระเงินใหม่"
+          icon={MdOutlinePayment}
+          onClose={() => setIsShowCreatePayment(false)}
+        />
+      )}
       <Topbar
         topic="รายละเอียดการหาร"
         onBack={() => {
@@ -54,7 +64,7 @@ export default function CreateTrip() {
             icon={IoIosText}
           />
           <div className="block mb-3 text-black">การชำระเงิน</div>
-          <Button onClick={async () => {}} className="justify-start mb-3">
+          <Button onClick={async () => setIsShowCreatePayment(true)} className="justify-start mb-3">
             <FaPlus className="fill-white" />
             เพิ่มการชำระเงินใหม่
           </Button>
@@ -68,7 +78,10 @@ export default function CreateTrip() {
               { value: "Honeybee", label: "Honeybee" },
             ]}
           />
-          <Button onClick={async () => {}} className="justify-center mb-3 ml-auto w-fit">
+          <Button
+            onClick={async () => {}}
+            className="justify-center mb-3 ml-auto w-fit"
+          >
             ต่อไป <IoIosArrowForward className="fill-white test-md" />
           </Button>
         </form>
