@@ -16,7 +16,7 @@ export interface SelectInputType {
 export default function SelectInput(props: SelectInputType) {
   const [selected, setSelected] = useState<null | Option>(null);
   const [output, setOutput] = useState("null");
-  const [local, setLocal] = useLocalStorage(
+  const [local, setLocal, _] = useLocalStorage(
     `input-select-${props.name}`
   );
 

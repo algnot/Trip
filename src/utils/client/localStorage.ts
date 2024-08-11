@@ -1,13 +1,10 @@
 import { useState, useEffect } from 'react';
 
-export const useLocalStorage = (key:string):[string, (value: string) => void] => {
+export const useLocalStorage = (key:string):[string, (value: string) => void, () => void] => {
     const [data, setData] = useState("");
 
     useEffect(() => {
-        const localVal = window.localStorage.getItem(key);
-        if(localVal) {
-            setData(localVal);
-        }
+        fetch()
     },[key]);
 
     const setLocalStorage = (value: string) => {
@@ -15,5 +12,12 @@ export const useLocalStorage = (key:string):[string, (value: string) => void] =>
         setData(value);
     }
 
-    return [data, setLocalStorage]
+    const fetch = () => {
+        const localVal = window.localStorage.getItem(key);
+        if(localVal) {
+            setData(localVal);
+        }
+    }
+
+    return [data, setLocalStorage, fetch]
 } 

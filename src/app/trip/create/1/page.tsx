@@ -5,6 +5,8 @@ import FormPopup from "@/components/FormPopup";
 import Navbar from "@/components/Navbar";
 import ProgressBar from "@/components/ProgressBar";
 import Topbar from "@/components/Topbar";
+import { addPayment, useUser } from "@/utils/client/apiClient";
+import { isNumeric } from "@/utils/client/string";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
@@ -21,6 +23,7 @@ export default function CreateTrip() {
   const router = useRouter();
   const [isShowCreatePayment, setIsShowCreatePayment] =
     useState<boolean>(false);
+  const [user, refetchUser] = useUser();
 
   return (
     <div className="container">
@@ -38,8 +41,23 @@ export default function CreateTrip() {
               placeholder: "หมายเลขพร้อมเพย์",
             },
           ]}
-          onSubmit={(value) => {
-            console.log(value);
+          onSubmit={async (value) => {
+            const response = await addPayment(value.paymentNumber);
+            if (!response) {
+              return "เกิดข้อผิดพลาดบางอย่าง กรุณาลองใหม่อีกครั้ง";
+            }
+            await refetchUser();
+            return false;
+          }}
+          handleValidate={(value) => {
+            if (!isNumeric(value.paymentNumber)) {
+              return "หมายเลขพร้อมเพย์ต้องเป็นตัวเลขเท่านั้น";
+            }
+            const userPayment: Array<string> = user.data?.payments ?? []
+            if(userPayment.includes(value.paymentNumber)) {
+              return "หมายเลขพร้อมเพย์มีอยู่แล้ว";
+            }
+            return false;
           }}
         />
       )}
@@ -53,7 +71,11 @@ export default function CreateTrip() {
         <ProgressBar steps={[1, 2, 3]} progresses={[50, 0, 0]} />
         <Form
           className="mt-8"
-          confirmText={<>ต่อไป <IoIosArrowForward className="fill-white" /></>}
+          confirmText={
+            <>
+              ต่อไป <IoIosArrowForward className="fill-white" />
+            </>
+          }
           inputList={[
             {
               type: "text",
@@ -85,11 +107,15 @@ export default function CreateTrip() {
               useLocal: true,
               icon: IoIosCard,
               placeholder: "เลือกการชำระเงิน",
-              options: [
-                { value: "fox", label: "Fox" },
-                { value: "Butterfly", label: "Butterfly" },
-                { value: "Honeybee", label: "Honeybee" },
-              ],
+              options:
+                user.data?.payments?.map(
+                  (value: Array<string>, index: number) => {
+                    return {
+                      value: value,
+                      label: `พร้อมเพย์ ${value}`
+                    };
+                  }
+                ) ?? [],
               beforeInput: (
                 <>
                   <div className="block mb-3 text-black">การชำระเงิน</div>

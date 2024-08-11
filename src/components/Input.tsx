@@ -20,7 +20,7 @@ export interface InputType {
 
 export default function Input(props: InputType) {
   const [date, setDate] = useState(new Date());
-  const [local, setLocal] = useLocalStorage(
+  const [local, setLocal, _] = useLocalStorage(
     `input-${props.type}-${props.name}`
   );
 

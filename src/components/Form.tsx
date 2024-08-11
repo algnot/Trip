@@ -1,4 +1,4 @@
-import { Component, ReactElement, useRef } from "react";
+import { ReactElement, useRef } from "react";
 import Input, { InputType } from "./Input";
 import SelectInput, { SelectInputType } from "./Select";
 import { Option } from "react-tailwindcss-select/dist/components/type";
