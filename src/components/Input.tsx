@@ -9,14 +9,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import { formatDateToString } from "@/utils/client/date";
 import { useLocalStorage } from "@/utils/client/localStorage";
 
-export default function Input(props: {
+export interface InputType {
   name: string;
   type: "text" | "number" | "date" | "textarea";
   label?: string;
   placeholder?: string;
   icon?: IconType;
   useLocal?: boolean;
-}) {
+}
+
+export default function Input(props: InputType) {
   const [date, setDate] = useState(new Date());
   const [local, setLocal] = useLocalStorage(
     `input-${props.type}-${props.name}`
@@ -63,6 +65,7 @@ export default function Input(props: {
           )}
           {props.type === "textarea" ? (
             <textarea
+              name={props.name}
               onChange={handleDataChange}
               defaultValue={!props.useLocal ? "" : local.toString()}
               placeholder={props.placeholder}
@@ -107,7 +110,7 @@ export default function Input(props: {
         <input
           type={props.type}
           name={props.name}
-          value={formatDateToString(date)}
+          defaultValue={formatDateToString(date)}
           className="hidden"
           readOnly
           placeholder={props.placeholder}

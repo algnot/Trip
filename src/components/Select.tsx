@@ -5,14 +5,15 @@ import Select from "react-tailwindcss-select";
 import { SelectValue, Option } from "react-tailwindcss-select/dist/components/type";
 // doc: https://www.npmjs.com/package/react-tailwindcss-select
 
-
-export default function SelectInput(props: {
+export interface SelectInputType {
   name: string;
   options: Option[];
   label?: string;
   icon?: IconType;
   placeholder?: string;
-}) {
+}
+
+export default function SelectInput(props: SelectInputType) {
   const [selected, setSelected] = useState<null | Option>(null);
   const [output, setOutput] = useState("null");
   const [local, setLocal] = useLocalStorage(
@@ -86,6 +87,7 @@ export default function SelectInput(props: {
           name={props.name}
           value={output}
           className="hidden"
+          readOnly
         />
       </div>
     </div>

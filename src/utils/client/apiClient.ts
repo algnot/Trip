@@ -42,31 +42,33 @@ export const getUser = async () => {
   try {
     return (await axios.get("/api/me")).data;
   } catch (e) {
-    return { };
+    return false;
   }
 };
 
 export const useUser = ():[any, (value: string) => void] => {
-  const [userData, setUserData] = useState({
-    data: {
-      name: "",
-      imageUrl: "",
-    }
-  });
+  const [userData, setUserData] = useState<any>({});
 
   useEffect(() => {
     const getUserData = async () => {
-      const catchData = window.localStorage.getItem("catch-data-user")
-      if(!catchData) {
-        const userData = await getUser();
+      let catchData = window.localStorage.getItem("catch-data-user")
+      if(catchData) {
+        catchData = JSON.parse(catchData)        
+      }
+      
+      if(Object.keys(catchData ?? {}).length === 0) {
+        const userData = await getUser();        
+        if (!userData) {
+          window.location.href = "/logout"
+        }
         window.localStorage.setItem("catch-data-user", JSON.stringify(userData))
         setUserData(userData)
       } else {
-        setUserData(JSON.parse(catchData))
+        setUserData(catchData)
       }
     }
 
-    if(!userData.data.name){
+    if(Object.keys(userData).length === 0){      
       getUserData()
     }
   });

@@ -21,7 +21,7 @@ export default function Home() {
             className="inline-block rounded-full"
             alt={`user-${user?.data?.name}`}
             src={user?.data?.imageUrl}
-            overrideSrc="/asset/icon/user-icon.png"
+            overrideSrc="/asset/icon/user.png"
           />
           <div>
             <div>สวัสดี</div>

@@ -1,10 +1,9 @@
 "use client";
 import Button from "@/components/Button";
 import Form from "@/components/Form";
-import Input from "@/components/Input";
+import FormPopup from "@/components/FormPopup";
 import Navbar from "@/components/Navbar";
 import ProgressBar from "@/components/ProgressBar";
-import SelectInput from "@/components/Select";
 import Topbar from "@/components/Topbar";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -20,15 +19,28 @@ import { MdOutlinePayment } from "react-icons/md";
 
 export default function CreateTrip() {
   const router = useRouter();
-  const [isShowCreatePayment, setIsShowCreatePayment] = useState<boolean>(false);
-  
+  const [isShowCreatePayment, setIsShowCreatePayment] =
+    useState<boolean>(false);
+
   return (
     <div className="container">
       {isShowCreatePayment && (
-        <Form
+        <FormPopup
           title="เพิ่มการชำระเงินใหม่"
           icon={MdOutlinePayment}
           onClose={() => setIsShowCreatePayment(false)}
+          inputList={[
+            {
+              type: "text",
+              name: "paymentNumber",
+              label: "หมายเลขพร้อมเพย์",
+              useLocal: true,
+              placeholder: "หมายเลขพร้อมเพย์",
+            },
+          ]}
+          onSubmit={(value) => {
+            console.log(value);
+          }}
         />
       )}
       <Topbar
@@ -39,52 +51,63 @@ export default function CreateTrip() {
       />
       <div className="px-10 pt-8">
         <ProgressBar steps={[1, 2, 3]} progresses={[50, 0, 0]} />
-        <form className="mt-8">
-          <Input
-            label="ชื่อการหาร"
-            type="text"
-            placeholder="ค่ากับข้าว"
-            name="name"
-            useLocal={true}
-            icon={IoIosDocument}
-          />
-          <Input
-            label="วันที่"
-            type="date"
-            name="date"
-            useLocal={true}
-            icon={IoIosCalendar}
-          />
-          <Input
-            label="รายละเอียดการหาร"
-            type="textarea"
-            name="desceiption"
-            useLocal={true}
-            placeholder="หารค่ากับข้าวที่ไปกินกันที่สยาม"
-            icon={IoIosText}
-          />
-          <div className="block mb-3 text-black">การชำระเงิน</div>
-          <Button onClick={async () => setIsShowCreatePayment(true)} className="justify-start mb-3">
-            <FaPlus className="fill-white" />
-            เพิ่มการชำระเงินใหม่
-          </Button>
-          <SelectInput
-            name="payment"
-            icon={IoIosCard}
-            placeholder="เลือกการชำระเงิน"
-            options={[
-              { value: "fox", label: "Fox" },
-              { value: "Butterfly", label: "Butterfly" },
-              { value: "Honeybee", label: "Honeybee" },
-            ]}
-          />
-          <Button
-            onClick={async () => {}}
-            className="justify-center mb-3 ml-auto w-fit"
-          >
-            ต่อไป <IoIosArrowForward className="fill-white test-md" />
-          </Button>
-        </form>
+        <Form
+          className="mt-8"
+          confirmText={<>ต่อไป <IoIosArrowForward className="fill-white" /></>}
+          inputList={[
+            {
+              type: "text",
+              name: "name",
+              label: "ชื่อการหาร",
+              useLocal: true,
+              icon: IoIosDocument,
+              placeholder: "ค่ากับข้าว",
+            },
+            {
+              type: "date",
+              name: "date",
+              label: "วันที่",
+              useLocal: true,
+              icon: IoIosCalendar,
+              placeholder: "ค่ากับข้าว",
+            },
+            {
+              type: "textarea",
+              name: "desceiption",
+              label: "รายละเอียดการหาร",
+              useLocal: true,
+              icon: IoIosText,
+              placeholder: "เลือกการชำระเงิน",
+            },
+            {
+              type: "select",
+              name: "payment",
+              useLocal: true,
+              icon: IoIosCard,
+              placeholder: "เลือกการชำระเงิน",
+              options: [
+                { value: "fox", label: "Fox" },
+                { value: "Butterfly", label: "Butterfly" },
+                { value: "Honeybee", label: "Honeybee" },
+              ],
+              beforeInput: (
+                <>
+                  <div className="block mb-3 text-black">การชำระเงิน</div>
+                  <Button
+                    onClick={async () => setIsShowCreatePayment(true)}
+                    className="justify-start mb-3"
+                  >
+                    <FaPlus className="fill-white" />
+                    เพิ่มการชำระเงินใหม่
+                  </Button>
+                </>
+              ),
+            },
+          ]}
+          onSubmit={(values) => {
+            console.log(values);
+          }}
+        />
       </div>
       <Navbar active="/" />
     </div>
